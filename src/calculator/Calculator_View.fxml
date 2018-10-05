@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.shape.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="290.0" prefWidth="490.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="calculator.Calculator_ViewController">
+    <children>
+      <Pane prefHeight="300.0" prefWidth="500.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <ImageView id="backgroundImage" fx:id="backgroundImage" fitHeight="300.0" fitWidth="500.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="/resource/bkg.jpg" />
+               </image>
+            </ImageView>
+            <Group layoutY="7.0">
+               <children>
+                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="29.0" layoutX="58.0" layoutY="7.0" stroke="BLACK" strokeType="INSIDE" width="384.0" />
+                  <Label id="historyLabel" fx:id="historyLabel" layoutX="68.0" layoutY="11.0" prefHeight="20.0" prefWidth="346.0" wrapText="true" />
+               </children>
+            </Group>
+            <Group id="displlay" layoutX="-4.0" layoutY="-8.0">
+               <children>
+                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="37.0" layoutX="62.0" layoutY="47.0" stroke="BLACK" strokeType="INSIDE" width="384.0" />
+                    <Label id="displayLabel" fx:id="displayLabel" layoutX="72.0" layoutY="47.0" minHeight="16" minWidth="69" opacity="0.9" prefHeight="37.0" prefWidth="374.0">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Group>
+            <Group layoutX="48.0" layoutY="-14.0">
+               <children>
+                  <Button id="clearCurrentNumButton" fx:id="clearCurrentNumButton" alignment="CENTER" contentDisplay="CENTER" layoutX="289.0" layoutY="108.0" onAction="#handleClearCurrentNumAction" opacity="0.8" prefHeight="26.0" prefWidth="42.0" text="CE">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Button>
+                    <Button id="equalSignLabel" fx:id="equalSignLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="237.0" layoutY="255.0" onAction="#handleEqualAction" opacity="0.8" prefHeight="31.0" prefWidth="94.0" text="=">
+                     <font>
+                        <Font name="System Bold" size="15.0" />
+                     </font>
+                  </Button>
+                  <Button id="plusButton" fx:id="plusButton" alignment="CENTER" contentDisplay="CENTER" layoutX="238.0" layoutY="219.0" onAction="#handlePlusAction" opacity="0.8" prefHeight="26.0" prefWidth="42.0" text="+" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Button>
+                  <Button id="clearButton" fx:id="clearButton" alignment="CENTER" contentDisplay="CENTER" layoutX="238.0" layoutY="108.0" onAction="#handleClearAction" opacity="0.8" prefHeight="26.0" prefWidth="42.0" text="C">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Button>
+                  <Button id="divideButton" fx:id="divideButton" alignment="CENTER" contentDisplay="CENTER" layoutX="289.0" layoutY="182.0" onAction="#handleDivideAction" opacity="0.8" prefHeight="26.0" prefWidth="42.0" text="/" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Button>
+                  <Button id="multiplyButton" fx:id="multiplyButton" alignment="CENTER" contentDisplay="CENTER" layoutX="238.0" layoutY="182.0" onAction="#handleMultiplyAction" opacity="0.8" prefHeight="26.0" prefWidth="42.0" text="*" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Button>
+                  <Button id="minusButton" fx:id="minusButton" alignment="CENTER" contentDisplay="CENTER" layoutX="289.0" layoutY="219.0" onAction="#handleMinusAction" opacity="0.8" prefHeight="26.0" prefWidth="42.0" text="-" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Button>
+                  <Button id="memButton" fx:id="memButton" alignment="CENTER" contentDisplay="CENTER" layoutX="238.0" layoutY="145.0" onAction="#handleMemAction" opacity="0.8" prefHeight="26.0" prefWidth="42.0" text="M+">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Button>
+                  <Button id="memRecallButton" fx:id="memRecallButton" alignment="CENTER" contentDisplay="CENTER" layoutX="289.0" layoutY="145.0" onAction="#handleMemRecallAction" opacity="0.8" prefHeight="26.0" prefWidth="42.0" text="MR">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Button>
+               </children>
+            </Group>
+            <Group layoutX="28.0" layoutY="-20.0">
+               <children>
+                  <Button id="Button5" fx:id="Button5" alignment="CENTER" contentDisplay="CENTER" layoutX="97.0" layoutY="160.0" mnemonicParsing="false" onAction="#handle5Action" opacity="0.8" prefHeight="37.0" prefWidth="42.0" text="5" textAlignment="CENTER" />
+                  <Button id="Button1" fx:id="Button1" alignment="CENTER" contentDisplay="CENTER" layoutX="41.0" layoutY="208.0" mnemonicParsing="false" onAction="#handle1Action" opacity="0.8" prefHeight="37.0" prefWidth="42.0" text="1" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font></Button>
+                  <Button id="Button7" fx:id="Button7" alignment="CENTER" contentDisplay="CENTER" layoutX="40.0" layoutY="114.0" mnemonicParsing="false" onAction="#handle7Action" opacity="0.8" prefHeight="37.0" prefWidth="42.0" text="7" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font></Button>
+                  <Button id="Button8" fx:id="Button8" alignment="CENTER" contentDisplay="CENTER" layoutX="97.0" layoutY="114.0" mnemonicParsing="false" onAction="#handle8Action" opacity="0.8" prefHeight="37.0" prefWidth="42.0" text="8" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font></Button>
+                  <Button id="Button2" fx:id="Button2" alignment="CENTER" contentDisplay="CENTER" layoutX="98.0" layoutY="208.0" mnemonicParsing="false" onAction="#handle2Action" opacity="0.8" prefHeight="37.0" prefWidth="42.0" text="2" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font></Button>
+                  <Button id="Button6" fx:id="Button6" alignment="CENTER" contentDisplay="CENTER" layoutX="152.0" layoutY="160.0" mnemonicParsing="false" onAction="#handle6Action" opacity="0.8" prefHeight="37.0" prefWidth="42.0" text="6" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font></Button>
+                  <Button id="Button9" fx:id="Button9" alignment="CENTER" contentDisplay="CENTER" layoutX="152.0" layoutY="114.0" mnemonicParsing="false" onAction="#handle9Action" opacity="0.8" prefHeight="37.0" prefWidth="42.0" text="9" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font></Button>
+                  <Button id="Button3" fx:id="Button3" alignment="CENTER" contentDisplay="CENTER" layoutX="153.0" layoutY="208.0" mnemonicParsing="false" onAction="#handle3Action" opacity="0.8" prefHeight="37.0" prefWidth="42.0" text="3" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font></Button>
+                  <Button id="Button4" fx:id="Button4" alignment="CENTER" contentDisplay="CENTER" layoutX="40.0" layoutY="160.0" mnemonicParsing="false" onAction="#handle4Action" opacity="0.8" prefHeight="37.0" prefWidth="42.0" text="4" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font></Button>
+                  <Button id="Button0" fx:id="Button0" alignment="CENTER" contentDisplay="CENTER" layoutX="41.0" layoutY="254.0" mnemonicParsing="false" onAction="#handle0Action" opacity="0.8" prefHeight="37.0" prefWidth="42.0" text="0" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font></Button>
+                  <Button id="buttonComma" fx:id="buttonComma" alignment="CENTER" contentDisplay="CENTER" layoutX="97.0" layoutY="254.0" mnemonicParsing="false" onAction="#handleCommaAction" opacity="0.8" prefHeight="37.0" prefWidth="42.0" text="," textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Button>
+                  <Button id="ButtonNegPos" fx:id="ButtonNegPos" alignment="CENTER" contentDisplay="CENTER" layoutX="153.0" layoutY="254.0" mnemonicParsing="false" onAction="#handleNegPosAction" opacity="0.8" prefHeight="37.0" prefWidth="42.0" text="+-" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Button>
+               </children>
+            </Group>
+            <Button id="ButtonBack" fx:id="ButtonBack" alignment="CENTER" contentDisplay="CENTER" layoutX="233.0" layoutY="94.0" mnemonicParsing="false" onAction="#handleBackAction" opacity="0.8" prefHeight="37.0" prefWidth="42.0" text="&lt;&lt;" textAlignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Button>
+            <Button id="memClearButton" fx:id="memClearButton" alignment="CENTER" contentDisplay="CENTER" layoutX="385.0" layoutY="131.0" onAction="#handleMemClearAction" opacity="0.8" prefHeight="26.0" prefWidth="42.0" text="MC">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font>
+            </Button>
+         </children>
+      </Pane>
+    </children>
+</AnchorPane>
