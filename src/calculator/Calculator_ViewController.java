@@ -186,54 +186,25 @@ public class Calculator_ViewController implements Initializable {
     // Buttons +,-,*,/
     @FXML
     private void handlePlusAction(ActionEvent event) {
+        //ezt az opType megadást nem sikerült beparamétereznem...
         m_opType = opType.Plus;
-        displayLabel.setText("+");  
-        int hLen = m_arrlHistory.size();
-        if(hLen > 2 && m_arrlHistory.get(hLen-2).contains("=")){
-            m_arrlHistory.add("+");         
-        }        
-        operationAction();   
-        m_arrlHistory.add("+");
-        
-
+        operationAction("+");   
      }
     @FXML
     private void handleMinusAction(ActionEvent event) {
         m_opType = opType.Minus;
-        displayLabel.setText("-");  
-        int hLen = m_arrlHistory.size();
-        if(hLen > 2 && m_arrlHistory.get(hLen-2).contains("=")){
-            m_arrlHistory.add("-");         
-        }
-        operationAction();
-        m_arrlHistory.add("-");        
-
+        operationAction("-");
     }
     @FXML
     private void handleMultiplyAction(ActionEvent event) {
         m_opType = opType.Multiply;
-        displayLabel.setText("*");
-        int hLen = m_arrlHistory.size();
-        if(hLen > 2 && m_arrlHistory.get(hLen-2).contains("=")){
-            m_arrlHistory.add("*");         
-        }        
-        operationAction();        
-        m_arrlHistory.add("*");        
-
+        operationAction("*");        
     }
     @FXML
     private void handleDivideAction(ActionEvent event) {
         m_opType = opType.Divide; 
-        displayLabel.setText("/"); 
-        int hLen = m_arrlHistory.size();
-        if(hLen > 2 && m_arrlHistory.get(hLen-2).contains("=")){
-            m_arrlHistory.add("/");         
-        }        
-        operationAction();        
-        m_arrlHistory.add("/");        
-
+        operationAction("/");        
     }
-
 //</editor-fold>
     
 //<editor-fold defaultstate="collapsed" desc="Button C, CE, M, MR">
@@ -281,32 +252,18 @@ public class Calculator_ViewController implements Initializable {
     @FXML //  =
     private void handleEqualAction(ActionEvent event) {
         m_dPrevNumber = m_dResult;
-        m_dInputNumber = Double.parseDouble(inputStr.toString());
-//        m_arrlHistory.add(String.valueOf(m_dInputNumber));
+        if (inputStr.length() != 0) {
+            m_dInputNumber = Double.parseDouble(inputStr.toString());
+        }
         m_arrlHistory.add(inputStr.toString());
-//        doubleAddHist(m_dInputNumber);
         inputStr.setLength(0);
         
-        if (m_dPrevNumber != 0){
-            switch (m_opType){
-                case Plus: m_dResult = m_dPrevNumber + m_dInputNumber;
-                break;
-                case Minus: m_dResult = m_dPrevNumber - m_dInputNumber;
-                break;
-                case Multiply: m_dResult = m_dPrevNumber * m_dInputNumber;
-                break;
-                case Divide: m_dResult = m_dPrevNumber / m_dInputNumber;
-                break;
-            }
-        historyDisplay();
-        m_arrlHistory.add("=");
-        doubleAddHist(m_dResult);
-        doubleDisplay(m_dResult);
-        
-//        m_arrlHistory.add(String.valueOf(result));
-//        displayLabel.setText(String.valueOf(result));
-        }else{
-            return;
+        if (m_dPrevNumber != 0) {
+            operationSwitch(m_opType);
+            historyDisplay();
+            m_arrlHistory.add("=");
+            doubleAddHist(m_dResult);
+            doubleDisplay(m_dResult);
         }
 //        System.out.println(calcArray[0] + " <=0 calCarray 1=> " + calcArray[1]);
 //        System.out.println("inputNumber1= " + inputNumber);
@@ -320,7 +277,13 @@ public class Calculator_ViewController implements Initializable {
     }
     
     // OPERATION BUTTONS ACTION
-    private void operationAction(){
+    private void operationAction(String op){
+//        m_opType = opType.Plus;
+        displayLabel.setText(op);  
+        int hLen = m_arrlHistory.size();
+        if(hLen > 2 && m_arrlHistory.get(hLen-2).contains("=")){
+            m_arrlHistory.add(op);         
+        }        
         m_bComma = false;  
         m_arrlHistory.add(inputStr.toString());    
         m_arrlOperation.add(m_opType);    
@@ -328,13 +291,30 @@ public class Calculator_ViewController implements Initializable {
         inputStr.setLength(0);
         opType lastOperation;
 
+	// Ez szerintem felesleges. result == 0 esetén az else utáni kód pont ugyanezt fogja csinálni. 
+	// Ez így kicsit rontja az érthetőséget, ráadásul double-re egyelnőséget sosem == operátorral nézz, hanem        
+            //azt értem hogy a booleant nem jó egyenlősíteni a kerekítés miatt, de ez elvileg azt az esetet nézi amikor úgy nyomunk 
+            //műveleti gombot, hogy nem vot előtte = lenyomva, tehát a m_dResult alapértelmezett 0 értéke áll fenn
+            //tehát igazából azt nézi hogy volt e lenyomva az egyenlő.
+            //persze a 0 érték előjöhet másképp is így belegondolva
+            //azt még nem értem, hogy az else mért ugyanaz de már lefáradtam... :)
         if (m_dResult == 0){
             m_dResult = m_dInputNumber;
-        historyDisplay();             
+            historyDisplay();             
         }else{
-        lastOperation = m_arrlOperation.get(m_arrlOperation.size()-2);               
+            lastOperation = m_arrlOperation.get(m_arrlOperation.size()-2);               
             m_dPrevNumber = m_dResult;
-            switch (lastOperation){
+            operationSwitch(lastOperation);             
+            doubleDisplay(m_dResult);    
+//            displayLabel.setText(String.valueOf(result));  
+            historyDisplay();     
+        }
+        m_arrlHistory.add(op);
+
+    }
+
+    private void operationSwitch(opType ot){
+            switch (ot){
                 case Plus: m_dResult = m_dPrevNumber + m_dInputNumber;
                 break;
                 case Minus: m_dResult = m_dPrevNumber - m_dInputNumber;
@@ -343,16 +323,7 @@ public class Calculator_ViewController implements Initializable {
                 break;
                 case Divide: m_dResult = m_dPrevNumber / m_dInputNumber;
                 break;
-        }
-        doubleDisplay(m_dResult);    
-//            displayLabel.setText(String.valueOf(result));  
-
-         historyDisplay();     
-        }
-
-//        System.out.println("m_arrlOperation= " + m_arrlOperation);  
-
-
+        }        
     }
     
     //stores the operation types
@@ -362,7 +333,6 @@ public class Calculator_ViewController implements Initializable {
     
      //removes the lonely zero after the comma from the double & displays number 
     public void doubleDisplay(Double number){
-
         int iResult = (int)Math.round(number);
         if(number % iResult == 0.0){
         displayLabel.setText(String.valueOf(iResult));  
@@ -372,9 +342,8 @@ public class Calculator_ViewController implements Initializable {
  
     }
     
-// adds the fixed double value to the history
+    // adds the fixed double value to the history
     public void doubleAddHist(Double number){
-
         int iResult = (int)Math.round(number);
         if(m_dResult % iResult == 0.0){
          m_arrlHistory.add(String.valueOf(iResult)); 
@@ -382,7 +351,7 @@ public class Calculator_ViewController implements Initializable {
          m_arrlHistory.add(String.valueOf(number)); 
         }
     }
-    
+
     //buids and displays a string from history list to the history label   
     public void historyDisplay(){
         StringBuilder historyString = new StringBuilder();            
