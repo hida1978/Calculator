@@ -24,7 +24,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javax.swing.KeyStroke;
+
 
 
 
@@ -34,21 +34,21 @@ public class Calculator_ViewController implements Initializable {
     //the list of the inserted numbers as string
     StringBuilder inputStr = new StringBuilder();
     //input characters, converted to number    
-    private double m_dInputNumber = 0; 
+    private double m_dInputNumber = 0.0; 
     // the previous input number or result
-    private double m_dPrevNumber = 0;     
+    private double m_dPrevNumber = 0.0;     
     // calculation result
-    private double result = 0; 
+    private double m_dResult = 0.0; 
     // memory
-    private double dMem;    
+    private double m_dMem;    
     // contains the types of the operations in enum
     private opType m_opType;
     // to avoid multiple commas
-    boolean commaBoolean = false;
+    boolean m_bComma = false;
     //a list contains the used operations
-    ArrayList <opType> operationList = new ArrayList <> ();     
+    ArrayList <opType> m_arrlOperation = new ArrayList <> ();     
     // stores history elements
-    ArrayList <String> historyList = new ArrayList <> ();      
+    ArrayList <String> m_arrlHistory = new ArrayList <> ();      
   
 //</editor-fold>
     
@@ -121,7 +121,7 @@ public class Calculator_ViewController implements Initializable {
     }
     @FXML  //  4
     private void handle4Action(ActionEvent event) {
-        inputNumber('4');;
+        inputNumber('4');
     }
     @FXML  //  5
     private void handle5Action(ActionEvent event) {
@@ -147,37 +147,38 @@ public class Calculator_ViewController implements Initializable {
     private void handle0Action(ActionEvent event) {
         inputNumber('0');
     }  
-//</editor-fold>    
+//</editor-fold> 
+    
 //<editor-fold defaultstate="collapsed" desc="Button: Comma, Back, +-">
     // Buttons: Comma, <=, +-
     @FXML  //  ,
     private void handleCommaAction(ActionEvent event) {
-        if (commaBoolean == false){
+        if (!m_bComma){
         inputNumber('.');
+        m_bComma = true;
         }
-        commaBoolean = true;
-
-//        inputNumber(',');
     }
+    
     @FXML  //   <=
     private void handleBackAction(ActionEvent event) {
       if (inputStr.length() != 0){
         inputStr.setLength(inputStr.length()-1);
         displayLabel.setText(inputStr.toString());
-        m_dInputNumber = Double.parseDouble(inputStr.toString());
-      }else{
-          return;
       }
     }
+    
     @FXML  //   -+
     private void handleNegPosAction(ActionEvent event) {
-        if (inputStr.charAt(0)!= '-' ){
-            inputStr.insert(0, "-");
-        }else{
-            inputStr.deleteCharAt(0);
-        }
-        displayLabel.setText(inputStr.toString());
-        m_dInputNumber = Double.parseDouble(inputStr.toString());
+            if (inputStr.length() == 0 || inputStr.charAt(0) != '-') {
+                if (inputStr.length() == 0) {
+                    inputStr.append("-");
+                } else {
+                    inputStr.insert(0, "-");
+                }
+            } else {
+                inputStr.deleteCharAt(0);
+            }
+            displayLabel.setText(inputStr.toString());
     }    
 //</editor-fold>
 
@@ -187,12 +188,12 @@ public class Calculator_ViewController implements Initializable {
     private void handlePlusAction(ActionEvent event) {
         m_opType = opType.Plus;
         displayLabel.setText("+");  
-        int hLen = historyList.size();
-        if(hLen > 2 && historyList.get(hLen-2).contains("=")){
-            historyList.add("+");         
+        int hLen = m_arrlHistory.size();
+        if(hLen > 2 && m_arrlHistory.get(hLen-2).contains("=")){
+            m_arrlHistory.add("+");         
         }        
         operationAction();   
-        historyList.add("+");
+        m_arrlHistory.add("+");
         
 
      }
@@ -200,36 +201,36 @@ public class Calculator_ViewController implements Initializable {
     private void handleMinusAction(ActionEvent event) {
         m_opType = opType.Minus;
         displayLabel.setText("-");  
-        int hLen = historyList.size();
-        if(hLen > 2 && historyList.get(hLen-2).contains("=")){
-            historyList.add("-");         
+        int hLen = m_arrlHistory.size();
+        if(hLen > 2 && m_arrlHistory.get(hLen-2).contains("=")){
+            m_arrlHistory.add("-");         
         }
         operationAction();
-        historyList.add("-");        
+        m_arrlHistory.add("-");        
 
     }
     @FXML
     private void handleMultiplyAction(ActionEvent event) {
         m_opType = opType.Multiply;
         displayLabel.setText("*");
-        int hLen = historyList.size();
-        if(hLen > 2 && historyList.get(hLen-2).contains("=")){
-            historyList.add("*");         
+        int hLen = m_arrlHistory.size();
+        if(hLen > 2 && m_arrlHistory.get(hLen-2).contains("=")){
+            m_arrlHistory.add("*");         
         }        
         operationAction();        
-        historyList.add("*");        
+        m_arrlHistory.add("*");        
 
     }
     @FXML
     private void handleDivideAction(ActionEvent event) {
         m_opType = opType.Divide; 
         displayLabel.setText("/"); 
-        int hLen = historyList.size();
-        if(hLen > 2 && historyList.get(hLen-2).contains("=")){
-            historyList.add("/");         
+        int hLen = m_arrlHistory.size();
+        if(hLen > 2 && m_arrlHistory.get(hLen-2).contains("=")){
+            m_arrlHistory.add("/");         
         }        
         operationAction();        
-        historyList.add("/");        
+        m_arrlHistory.add("/");        
 
     }
 
@@ -239,39 +240,39 @@ public class Calculator_ViewController implements Initializable {
     // Buttons: C, CE, =, M, MR
     @FXML  //  C
     private void handleClearAction(ActionEvent event) {
-        commaBoolean = false;        
-        historyList.clear();        
+        m_bComma = false;        
+        m_arrlHistory.clear();        
         inputStr.setLength(0);
         displayLabel.setText("");
         historyLabel.setText("");
         m_dInputNumber = 0;
-        result = 0;
+        m_dResult = 0;
     }
     @FXML  //  CE
     private void handleClearCurrentNumAction(ActionEvent event) {
-        commaBoolean = false;   
+        m_bComma = false;   
         inputStr.setLength(0);        
         displayLabel.setText("");
       
     }
     @FXML  //  M
     private void handleMemAction(ActionEvent event) {
-        if (result !=0){
-        dMem += result;  
+        if (m_dResult !=0){
+        m_dMem += m_dResult;  
         }else{
-        dMem += Double.parseDouble(inputStr.toString());   
+        m_dMem += Double.parseDouble(inputStr.toString());   
         }        
     }
     @FXML  //  MR
     private void handleMemRecallAction(ActionEvent event) {
         inputStr.setLength(0); 
 //        displayLabel.setText(String.valueOf(dMem));
-        doubleDisplay(dMem);
-        result = dMem;
+        doubleDisplay(m_dMem);
+        m_dResult = m_dMem;
     }   
     @FXML  //  MC
     private void handleMemClearAction(ActionEvent event) {
-        dMem = 0;
+        m_dMem = 0;
     }     
 
 //</editor-fold>
@@ -279,30 +280,30 @@ public class Calculator_ViewController implements Initializable {
 //<editor-fold defaultstate="collapsed" desc="= Button">
     @FXML //  =
     private void handleEqualAction(ActionEvent event) {
-        m_dPrevNumber = result;
+        m_dPrevNumber = m_dResult;
         m_dInputNumber = Double.parseDouble(inputStr.toString());
-//        historyList.add(String.valueOf(m_dInputNumber));
-        historyList.add(inputStr.toString());
+//        m_arrlHistory.add(String.valueOf(m_dInputNumber));
+        m_arrlHistory.add(inputStr.toString());
 //        doubleAddHist(m_dInputNumber);
         inputStr.setLength(0);
         
         if (m_dPrevNumber != 0){
             switch (m_opType){
-                case Plus: result = m_dPrevNumber + m_dInputNumber;
+                case Plus: m_dResult = m_dPrevNumber + m_dInputNumber;
                 break;
-                case Minus: result = m_dPrevNumber - m_dInputNumber;
+                case Minus: m_dResult = m_dPrevNumber - m_dInputNumber;
                 break;
-                case Multiply: result = m_dPrevNumber * m_dInputNumber;
+                case Multiply: m_dResult = m_dPrevNumber * m_dInputNumber;
                 break;
-                case Divide: result = m_dPrevNumber / m_dInputNumber;
+                case Divide: m_dResult = m_dPrevNumber / m_dInputNumber;
                 break;
             }
         historyDisplay();
-        historyList.add("=");
-        doubleAddHist(result);
-        doubleDisplay(result);
+        m_arrlHistory.add("=");
+        doubleAddHist(m_dResult);
+        doubleDisplay(m_dResult);
         
-//        historyList.add(String.valueOf(result));
+//        m_arrlHistory.add(String.valueOf(result));
 //        displayLabel.setText(String.valueOf(result));
         }else{
             return;
@@ -320,36 +321,36 @@ public class Calculator_ViewController implements Initializable {
     
     // OPERATION BUTTONS ACTION
     private void operationAction(){
-        commaBoolean = false;  
-        historyList.add(inputStr.toString());    
-        operationList.add(m_opType);    
+        m_bComma = false;  
+        m_arrlHistory.add(inputStr.toString());    
+        m_arrlOperation.add(m_opType);    
         m_dInputNumber = Double.parseDouble(inputStr.toString());
         inputStr.setLength(0);
         opType lastOperation;
 
-        if (result == 0){
-            result = m_dInputNumber;
+        if (m_dResult == 0){
+            m_dResult = m_dInputNumber;
         historyDisplay();             
         }else{
-        lastOperation = operationList.get(operationList.size()-2);               
-            m_dPrevNumber = result;
+        lastOperation = m_arrlOperation.get(m_arrlOperation.size()-2);               
+            m_dPrevNumber = m_dResult;
             switch (lastOperation){
-                case Plus: result = m_dPrevNumber + m_dInputNumber;
+                case Plus: m_dResult = m_dPrevNumber + m_dInputNumber;
                 break;
-                case Minus: result = m_dPrevNumber - m_dInputNumber;
+                case Minus: m_dResult = m_dPrevNumber - m_dInputNumber;
                 break;
-                case Multiply: result = m_dPrevNumber * m_dInputNumber;
+                case Multiply: m_dResult = m_dPrevNumber * m_dInputNumber;
                 break;
-                case Divide: result = m_dPrevNumber / m_dInputNumber;
+                case Divide: m_dResult = m_dPrevNumber / m_dInputNumber;
                 break;
         }
-        doubleDisplay(result);    
+        doubleDisplay(m_dResult);    
 //            displayLabel.setText(String.valueOf(result));  
 
          historyDisplay();     
         }
 
-//        System.out.println("operationList= " + operationList);  
+//        System.out.println("m_arrlOperation= " + m_arrlOperation);  
 
 
     }
@@ -375,17 +376,17 @@ public class Calculator_ViewController implements Initializable {
     public void doubleAddHist(Double number){
 
         int iResult = (int)Math.round(number);
-        if(result % iResult == 0.0){
-         historyList.add(String.valueOf(iResult)); 
+        if(m_dResult % iResult == 0.0){
+         m_arrlHistory.add(String.valueOf(iResult)); 
         }else{        
-         historyList.add(String.valueOf(number)); 
+         m_arrlHistory.add(String.valueOf(number)); 
         }
     }
     
     //buids and displays a string from history list to the history label   
     public void historyDisplay(){
         StringBuilder historyString = new StringBuilder();            
-        for (String i: historyList){
+        for (String i: m_arrlHistory){
         historyString.append(i);
         }
         historyLabel.setText(historyString.toString());   
